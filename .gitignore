@@ -1,7 +1,6 @@
 *.zip
 *.tar
 *submit.txt
-num_frames*
 models/
 __pycache__/
 i3d_rgb*/
