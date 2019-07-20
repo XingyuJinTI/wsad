@@ -13,7 +13,7 @@ def make_dataset(split_file, split, root, mode, num_classes=157):
     dataset = []
     with open(split_file, 'r') as f:
         data = json.load(f)
-    with open('num_frames_' + mode + '_hakan' + '.json', 'r') as infile:
+    with open('num_frames_' + mode + '.json', 'r') as infile:
         dict_num_frames = json.load(infile)
 
     i = 0
@@ -23,14 +23,7 @@ def make_dataset(split_file, split, root, mode, num_classes=157):
         
         if not os.path.exists(os.path.join(root, vid)+'.npy'):
             continue
-#        num_frames = 64
-        
-#        label = np.zeros((num_classes, num_frames), np.float32)
-#        fps = num_frames/data[vid]['duration']
-#        for ann in data[vid]['actions']: # label every frame by binary code for all classes
-#            for fr in range(0,num_frames,1):
-#                if fr/fps >= ann[1] and fr/fps <= ann[2]:
-#                    label[ann[0], fr] = 1 # binary classification
+
         label = np.zeros(num_classes, np.float32)
         for ann in data[vid]['actions']:
             label[ann[0]] = 1
