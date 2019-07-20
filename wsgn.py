@@ -20,9 +20,9 @@ class WSGN(nn.Module):
  
 
     def forward(self, x):
-        x = self.dropout(F.relu(self.logits(F.relu(x))))
+        #x = self.dropout(F.relu(self.logits(F.relu(x))))
         #x = self.dropout(F.relu(self.logits(x)))
-        #x = self.dropout(F.relu(x))
+        x = self.dropout(F.relu(x))
         cls_x = self.cls_logits(x)
         loc_x = self.loc_logits(x)
         if self._spatial_squeeze:
@@ -37,8 +37,8 @@ class Z_Loc(nn.Module):
         super(Z_Loc, self).__init__()
 
     def forward(self, x):
-        return torch.exp( - (x-x.mean(2).unsqueeze(2).expand_as(x))**2 / x.var(2,unbiased=False).unsqueeze(2).expand_as(x))
-        # modify the mean
+        return torch.exp( - (x-x.mean(2).unsqueeze(2).expand_as(x))**2)# / x.var(2,unbiased=False).unsqueeze(2).expand_as(x))
+
 
 class G_Loc(nn.Module):
     def __init__(self, num_classes=400):
