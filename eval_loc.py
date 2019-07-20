@@ -19,13 +19,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-import torchvision
-from torchvision import datasets, transforms
 
 
 import numpy as np
 
-from wsgn_own import WSGN
+from wsgn import WSGN
 
 from charades_i3d_rgb_data_for_eval import Charades as Dataset
 

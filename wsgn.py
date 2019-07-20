@@ -9,7 +9,7 @@ class WSGN(nn.Module):
         self._num_classes = num_classes
         self._spatial_squeeze = spatial_squeeze
 
-        #self.logits = nn.Conv2d(in_channels=1024, out_channels=1024, kernel_size=1)
+        self.logits = nn.Conv2d(in_channels=1024, out_channels=1024, kernel_size=1)
         self.dropout = nn.Dropout(dropout_keep_prob)
         self.cls_logits = nn.Conv2d(in_channels=1024, out_channels=self._num_classes, kernel_size=1)
         self.loc_logits = nn.Conv2d(in_channels=1024, out_channels=self._num_classes, kernel_size=1)
@@ -20,8 +20,9 @@ class WSGN(nn.Module):
  
 
     def forward(self, x):
+        x = self.dropout(F.relu(self.logits(F.relu(x))))
         #x = self.dropout(F.relu(self.logits(x)))
-        x = self.dropout(F.relu(x))
+        #x = self.dropout(F.relu(x))
         cls_x = self.cls_logits(x)
         loc_x = self.loc_logits(x)
         if self._spatial_squeeze:

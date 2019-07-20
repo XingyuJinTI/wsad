@@ -1,6 +1,5 @@
 *.zip
 *.tar
-*submit.txt
 models/
 __pycache__/
 i3d_rgb*/
