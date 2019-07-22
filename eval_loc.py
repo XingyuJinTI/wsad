@@ -7,12 +7,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-mode', type=str, help='rgb or flow')
 parser.add_argument('-load_model', type=str)
 parser.add_argument('-root', type=str)
-parser.add_argument('-gpu', type=str)
 parser.add_argument('-save_dir', type=str)
 parser.add_argument('-model', type=str)
 
 args = parser.parse_args()
-os.environ["CUDA_VISIBLE_DEVICES"]=args.gpu
+os.environ["CUDA_VISIBLE_DEVICES"]='0'
 
 import torch
 import torch.nn as nn

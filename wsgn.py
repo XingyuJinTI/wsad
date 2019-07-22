@@ -74,7 +74,7 @@ class WSGN_2fc(nn.Module):
     def forward(self, x):
         #x = self.dropout(F.relu(self.logits(F.relu(x))))
         #x = self.dropout(F.relu(self.logits(x)))
-        x = self.dropout(x)
+        x = self.dropout(F.relu(x))
         cls_x = F.relu(self.cls_logits1(x))
         cls_x = F.relu(self.cls_logits2(cls_x))
         loc_x = F.relu(self.loc_logits1(x))
