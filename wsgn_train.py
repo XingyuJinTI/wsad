@@ -20,18 +20,13 @@ from torch.optim import lr_scheduler
 from torch.autograd import Variable
 
 
-from wsgn import WSGN, WSGN_2fc
+from wsgn import WSGN, WSGN_2fc, WSGN_sigmoid
 
 #from charades_dataset import Charades as Dataset
 from charades_i3d_rgb_data import Charades as Dataset
 
 def run(init_lr=1e-3, max_steps=10e3, mode='rgb', root='i3d_rgb_charades', train_split='charades/charades.json', batch_size=128, save_model='models/baseline/',model='wsgn'):
     # setup dataset
-#    train_transforms = transforms.Compose([videotransforms.RandomCrop(224),
-#                                           videotransforms.RandomHorizontalFlip(),
-#    ])
-#    test_transforms = transforms.Compose([videotransforms.CenterCrop(224)])
-
     dataset = Dataset(train_split, 'training', root, mode)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=1, pin_memory=True)
 
@@ -47,6 +42,8 @@ def run(init_lr=1e-3, max_steps=10e3, mode='rgb', root='i3d_rgb_charades', train
         print("WSGN model set up.")
     if model=='WSGN_2fc':
         wsgn = WSGN_2fc(num_classes=157, mode=mode)
+    if model=='WSGN_sigmoid':
+        wsgn = WSGN_sigmoid(num_classes=157, mode=mode)
     #wsgn.load_state_dict(torch.load('models/wsgn/010000.pt'))
     wsgn.cuda()
     wsgn = nn.DataParallel(wsgn)
