@@ -20,7 +20,7 @@ from torch.optim import lr_scheduler
 from torch.autograd import Variable
 
 
-from wsgn import WSGN
+from wsgn import WSGN, WSGN_2fc
 
 #from charades_dataset import Charades as Dataset
 from charades_i3d_rgb_data import Charades as Dataset
@@ -45,6 +45,8 @@ def run(init_lr=1e-3, max_steps=10e3, mode='rgb', root='i3d_rgb_charades', train
     if model=='wsgn':
         wsgn = WSGN(num_classes=157, mode=mode)
         print("WSGN model set up.")
+    if model=='WSGN_2fc':
+        wsgn = WSGN_2fc(num_classes=157, mode=mode)
     #wsgn.load_state_dict(torch.load('models/wsgn/010000.pt'))
     wsgn.cuda()
     wsgn = nn.DataParallel(wsgn)
