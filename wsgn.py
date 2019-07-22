@@ -51,7 +51,21 @@ class G_Loc(nn.Module):
             - (x-self.mean.expand(x.size()[0:2]).unsqueeze(2).expand_as(x))**2 
             / self.std.expand(x.size()[0:2]).unsqueeze(2).expand_as(x)**2
         )
- 
+
+
+
+class Loc_Sigmoid(nn.Module):
+    def __init__(self, dim, alpha, beta):
+        super(Loc_Sigmoid, self).__init__()
+        self.dim = dim
+        self.alpha = alpha
+        self.beta = beta
+
+    def forward(self, x):
+        means = torch.mean(x, self.dim, keepdim=True)
+        x_exp = torch.exp(self.alpha * (self.beta * means - x)) # because multiplied with -1
+        return 1 / (1 + x_exp)
+    
 
 class WSGN_sigmoid(nn.Module):
     def __init__(self, num_classes=400, spatial_squeeze=True, name='wsgn', dropout_keep_prob=0.8, mode='rgb'):
