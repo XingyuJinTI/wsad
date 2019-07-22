@@ -23,7 +23,7 @@ from torch.autograd import Variable
 
 import numpy as np
 
-from wsgn import WSGN
+from wsgn import WSGN, WSGN_2fc
 
 from charades_i3d_rgb_data_for_eval import Charades as Dataset
 
@@ -90,6 +90,8 @@ def run(max_steps=64e3, mode='rgb', root='i3d_rgb', split='charades/charades.jso
     # setup the model
     if model=='wsgn':
         wsgn = WSGN(num_classes=157, mode=mode)
+    if model=='WSGN_2fc':
+        wsgn = WSGN_2fc(num_classes=157, mode=mode)
     wsgn.load_state_dict(torch.load(load_model))
     wsgn.cuda()
     wsgn = nn.DataParallel(wsgn)
