@@ -77,7 +77,9 @@ class WSGN_sigmoid(nn.Module):
         self.cls_logits = nn.Conv2d(in_channels=1024, out_channels=self._num_classes, kernel_size=1)
         self.loc_logits = nn.Conv2d(in_channels=1024, out_channels=self._num_classes, kernel_size=1)
         self.s_Cls = nn.Softmax(1)
-        self.sig_Loc = Loc_Sigmoid(dim=1, alpha=2, beta=1)
+        alpha, beta = 2, 1.5
+        print('alpha = {}, beta = {}'.format(alpha, beta))
+        self.sig_Loc = Loc_Sigmoid(dim=1, alpha=alpha, beta=beta)
  
 
     def forward(self, x):

@@ -132,8 +132,8 @@ def run(max_steps=64e3, mode='rgb', root='i3d_rgb', split='charades/charades.jso
     mAP, _, ap = charades_map(np.vstack(outputs), np.vstack(gts))
     print(ap)
     print(' * mAP {:.9f}'.format(mAP))
-    submission_file(
-        ids, outputs, args.save_dir)
+#    submission_file(
+#        ids, outputs, args.save_dir)
     return mAP
 
 

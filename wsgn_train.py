@@ -48,6 +48,8 @@ def run(init_lr=1e-3, max_steps=10e3, mode='rgb', root='i3d_rgb_charades', train
     wsgn.cuda()
     wsgn = nn.DataParallel(wsgn)
     
+    if not os.path.exists(save_model):
+        os.mkdir(save_model)
 
     lr = init_lr
     # optimizer = optim.SGD(wsgn.parameters(), lr=lr, momentum=0.9, weight_decay=0.0000001)
@@ -104,7 +106,8 @@ def run(init_lr=1e-3, max_steps=10e3, mode='rgb', root='i3d_rgb_charades', train
                     if steps % 10 == 0:
                         print('{} Cls Loss: {:.8f}'.format(phase, tot_loss/10))
                         # save model
-                        torch.save(wsgn.module.state_dict(), save_model+str(steps).zfill(6)+'.pt')
+                        if steps % 200 == 0:
+                            torch.save(wsgn.module.state_dict(), save_model+str(steps).zfill(6)+'.pt')
                         tot_loss = 0.
             if phase == 'val':
                 print('{} Cls Loss: {:.8f}'.format(phase, (tot_loss*num_steps_per_update)/num_iter))
