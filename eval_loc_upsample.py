@@ -108,9 +108,11 @@ def run(max_steps=64e3, mode='rgb', root='i3d_rgb', split='charades/charades.jso
     # Iterate over data.
     for data in val_dataloader:
         # get the inputs
-        inputs, labels, name = data
-        t = inputs.shape[2]
+        inputs, labels, name, nf = data
+        inputs = F.upsample(inputs, (int(nf),1), mode='bilinear')
 
+        t = inputs.shape[2]
+        print(t, ' ', nf)
             # (C x T x 1)
 
         # wrap them in Variable

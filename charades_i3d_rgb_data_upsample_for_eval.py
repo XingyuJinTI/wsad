@@ -14,6 +14,8 @@ def make_dataset(split_file, split, root, mode, num_classes=157):
         data = json.load(f)
     with open('num_frames_' + mode + '.json', 'r') as infile:
         dict_num_frames = json.load(infile)
+    with open('num_frames_' + mode + '_input' + '.json', 'r') as infile:
+        dict_num_frames_input = json.load(infile)
         
     i = 0
     for vid in data.keys():
@@ -31,7 +33,7 @@ def make_dataset(split_file, split, root, mode, num_classes=157):
             for fr in range(0,num_frames,1):
                 if fr/fps >= ann[1] and fr/fps <= ann[2]:
                     label[ann[0], fr] = 1 # binary classification
-        dataset.append((vid, label, data[vid]['duration'], dict_num_frames[vid]))
+        dataset.append((vid, label, data[vid]['duration'], dict_num_frames_input[vid]))
         i += 1
     return dataset
 
@@ -57,7 +59,7 @@ class Charades(data_utl.Dataset):
         vid, label, dur, nf = self.data[index]
         start_f = 0
         feature = np.load(os.path.join(self.root, vid) + '.npy')
-        return torch.from_numpy(feature[:, np.round(np.linspace(start_f, nf-1, 64)).astype(int), :]), torch.from_numpy(label), vid
+        return torch.from_numpy(feature), torch.from_numpy(label), vid, nf
 
     def __len__(self):
         return len(self.data)

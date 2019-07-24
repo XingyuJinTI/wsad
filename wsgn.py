@@ -21,8 +21,8 @@ class WSGN(nn.Module):
 
     def forward(self, x):
         #x = self.dropout(F.relu(self.logits(F.relu(x))))
-        #x = self.dropout(F.relu(self.logits(x)))
-        x = self.dropout(F.relu(x))
+        x = self.dropout(F.relu(self.logits(x)))
+        #x = self.dropout(F.relu(x))
         cls_x = self.cls_logits(x)
         loc_x = self.loc_logits(x)
         if self._spatial_squeeze:
