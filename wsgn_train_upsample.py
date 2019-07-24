@@ -86,7 +86,7 @@ def run(init_lr=1e-3, max_steps=10e3, mode='rgb', root='i3d_rgb_charades', train
                 inputs = Variable(inputs.cuda())
                 labels = Variable(labels.cuda())
 
-                inputs = F.upsample(inputs, (nf,1), mode='bilinear')
+                inputs = F.upsample(inputs, (int(nf),1), mode='bilinear')
 
                 cls_score, loc_score = wsgn(inputs)
                 
