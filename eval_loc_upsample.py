@@ -24,7 +24,7 @@ import numpy as np
 
 from wsgn import WSGN, WSGN_2fc,WSGN_sigmoid
 
-from charades_i3d_rgb_data_for_eval import Charades as Dataset
+from charades_i3d_rgb_data_upsample_for_eval import Charades as Dataset
 
 
 def submission_file(ids, outputs, filename):
@@ -109,14 +109,14 @@ def run(max_steps=64e3, mode='rgb', root='i3d_rgb', split='charades/charades.jso
     for data in val_dataloader:
         # get the inputs
         inputs, labels, name, nf = data
-        inputs = F.upsample(inputs, (int(nf),1), mode='bilinear')
 
-        t = inputs.shape[2]
-        print(t, ' ', nf)
+
+
             # (C x T x 1)
 
         # wrap them in Variable
         inputs = Variable(inputs.cuda(), volatile=True)
+        inputs = F.upsample(inputs, (int(nf),1), mode='bilinear')
         labels = Variable(labels.cuda(), volatile=True)
         cls_score, loc_score = wsgn(inputs)
         score = cls_score*loc_score
@@ -125,7 +125,7 @@ def run(max_steps=64e3, mode='rgb', root='i3d_rgb', split='charades/charades.jso
         # store predictions
         for i in range(25):
             
-            outputs.append(score[:,:,i*t//25].squeeze(0).data.cpu().numpy())
+            outputs.append(score[:,:,i*int(nf)//25].squeeze(0).data.cpu().numpy())
             gts.append(labels[:,:,i].squeeze(0).data.cpu().numpy())
             ids.append(name[0]+' '+str(i+1))
 
